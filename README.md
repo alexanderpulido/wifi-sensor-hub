@@ -168,10 +168,4 @@ wifi-sensor-hub/
         └── telemetry.c
 ```
 
-## License
-
-See LICENSE file for details.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
+## Testing and Verification
