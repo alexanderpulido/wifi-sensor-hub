@@ -1,0 +1,14 @@
+PROJECT_NAME           = "WiFi Sensor Hub"
+PROJECT_BRIEF          = "ESP32 + BME280 environmental station publishing over HTTP/MQTT"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = main components README.md
+FILE_PATTERNS          = *.c *.h *.md
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = README.md
+EXTRACT_ALL            = NO
+EXTRACT_STATIC         = YES
+OPTIMIZE_OUTPUT_FOR_C  = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+SOURCE_BROWSER         = YES
+WARN_IF_UNDOCUMENTED   = YES

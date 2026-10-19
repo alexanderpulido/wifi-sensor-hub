@@ -1,0 +1,86 @@
+menu "WiFi Sensor Hub"
+
+    config HUB_DEVICE_ID
+        string "Device ID"
+        default "esp32-hub-01"
+        help
+            Identifier included in every JSON payload and used in the MQTT topic.
+
+    config HUB_SAMPLE_PERIOD_MS
+        int "Sampling period (ms)"
+        range 500 3600000
+        default 5000
+
+    config HUB_QUEUE_LENGTH
+        int "Sensor-to-Wi-Fi queue length"
+        range 1 256
+        default 16
+        help
+            Readings buffered while Wi-Fi is down. When full, the oldest reading is dropped.
+
+    menu "Wi-Fi"
+        config HUB_WIFI_SSID
+            string "Wi-Fi SSID"
+            default "myssid"
+
+        config HUB_WIFI_PASSWORD
+            string "Wi-Fi password"
+            default "mypassword"
+    endmenu
+
+    menu "BME280 (I2C)"
+        config HUB_I2C_PORT
+            int "I2C port"
+            range 0 1
+            default 0
+
+        config HUB_I2C_SDA_GPIO
+            int "SDA GPIO"
+            default 21
+
+        config HUB_I2C_SCL_GPIO
+            int "SCL GPIO"
+            default 22
+
+        config HUB_I2C_FREQ_HZ
+            int "I2C clock (Hz)"
+            default 100000
+
+        choice HUB_BME280_ADDR
+            prompt "BME280 I2C address"
+            default HUB_BME280_ADDR_0x76
+            config HUB_BME280_ADDR_0x76
+                bool "0x76 (SDO to GND)"
+            config HUB_BME280_ADDR_0x77
+                bool "0x77 (SDO to VDDIO)"
+        endchoice
+    endmenu
+
+    menu "Transport"
+        choice HUB_TRANSPORT
+            prompt "Transport"
+            default HUB_TRANSPORT_HTTP
+
+            config HUB_TRANSPORT_HTTP
+                bool "HTTP POST"
+            config HUB_TRANSPORT_MQTT
+                bool "MQTT"
+        endchoice
+
+        config HUB_HTTP_URL
+            string "HTTP endpoint URL"
+            depends on HUB_TRANSPORT_HTTP
+            default "http://192.168.1.100:8000/api/readings"
+
+        config HUB_MQTT_BROKER_URI
+            string "MQTT broker URI"
+            depends on HUB_TRANSPORT_MQTT
+            default "mqtt://192.168.1.100:1883"
+
+        config HUB_MQTT_TOPIC
+            string "MQTT topic"
+            depends on HUB_TRANSPORT_MQTT
+            default "wifi-sensor-hub/readings"
+    endmenu
+
+endmenu
